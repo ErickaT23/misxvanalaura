@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Quince Ana Laura Amaya Ariza</title>
+    <meta property="og:url" content="">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Mis Quince Ana Laura Amaya Ariza">
+    <meta property="og:description" content="Te invito a mis quince, con amor Ana Laura Amaya Ariza.">
+    <meta property="og:image" content="https://images.pexels.com/photos/12017111/pexels-photo-12017111.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preload" href="Imagenes/F1.jpg" as="image">
+     <!-- Preconnect and Load Fonts -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Imperial+Script&display=swap" rel="stylesheet">
+     <script src="https://cdn.lordicon.com/lordicon.js"></script>
+</head>
+<body>
+    <!-- Sobre de la Invitación -->
+    <div id="envelope">
+        <div id="envelope-top"></div>
+        <div id="seal">
+            <h2 class="fade-in-element visible" style="transition-delay: 0s;"></h2>
+        </div>
+        <div id="envelope-bottom"></div>
+    </div>
+    <!-- Contenido de la Invitación -->
+    <div id="invitacion">
+        <!-- Sección de Foto -->
+        <div class="section-main fade-in-element">
+            <img src="Imagenes/PORTADA.jpg" alt="Foto de la quinceañera" width="100%">
+            <div class="section-main-title">
+                <h1 class="text-rose-gradient-bright">Mis Quince</h1>
+                <h2 class="text-rose-gradient-bright">Ana Laura</h2>
+            </div>
+        </div>
+        <!-- Contador de Fecha Regresiva -->
+        <div class="section-countdown fade-in-element">
+            <h1>¡Están invitados!</h1>
+            <p>Nos encanta que sean parte de este momento tan especial para nosotros.</p>
+            <h2>17 . 10 . 2026</h2>
+            <div id="contador">
+                <div class="countdown-circle">
+                    <span id="dias">00</span>
+                    <span>días</span>
+                </div>
+                <div class="countdown-circle">
+                    <span id="horas">00</span>
+                    <span>horas</span>
+                </div>
+                <div class="countdown-circle">
+                    <span id="minutos">00</span>
+                    <span>minutos</span>
+                </div>
+                <div class="countdown-circle">
+                    <span id="segundos">00</span>
+                    <span>segundos</span>
+                </div>
+            </div>
+             <!-- Agregar al Calendario -->
+              <div class="section-calendar">
+              <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Mis+Quince+-+Ana+Laura+Amaya+Ariza&dates=20261017T170000/20261017T230000&details=Te+esperamos+para+celebrar+mis+quince.&location=Antigua+Guatemala" target="_blank">Agregar al Calendario</a>
+              </div>
+        </div>
+        <!-- Música de fondo -->
+        <div class="section-music fade-in-element">
+            <h2>"Yellow - Coldplay"</h2>
+          <audio id="musica" controls loop>
+             <source src="Yellow.mp3" type="audio/mpeg">
+             Tu navegador no soporta la reproducción de audio.
+          </audio>
+        </div>
+        <!--div cerezo-->
+        <div class="section-cerezo0"></div>
+         <!-- Bendición de Padres -->
+         <div class="section-b fade-in-element">
+            <p>Con la bendición de Dios y de mis padres</p>
+            <h1>Erick Alberto Amaya Herrera</h1>
+            <h2>&</h2>
+            <h1>Claudia María Ariza Hernández</h1>
+        </div>
+           <!-- Nombre de Invitados y Cantidad de Pases -->
+           <div class="section fade-in-element">
+            <h1>Los invitamos con mucho cariño</h1>
+            <h3 id="nombreInvitado"></h3>
+            <h3 id="cantidadPases"></h3>
+        </div>
+        <!-- Confirmación -->
+        <div class="section fade-in-element">
+            <h3>Confirmar Asistencia</h3>
+            <lord-icon
+             src="https://cdn.lordicon.com/fjvfsqea.json"
+             trigger="loop"
+             delay="2000"
+             stroke="light"
+             colors="primary:#8B4513,secondary:#C7889D"
+             style="width:200px;height:200px">
+           </lord-icon>
+           <p>Para nosotros es muy importante que confirmes tu asistencia antes del 01 de Marzo, o bien indicarnos si no podrás acompañarnos.</p>
+            <button onclick="confirmarAsistencia()">Confirmar</button>
+            <div id="confirmacion"></div>
+        </div>
+         <!--imagen-->
+         <div class="section fade-in-element">
+            <img src="Imagenes/S1.jpg" alt="Foto de la quinceañera" width="100%" loading="lazy">
+        </div>
+        <!-- Itinerario -->
+        <div class="section fade-in-element">
+          <!--card ceremonia-->
+         <!--card fiesta-->
+           <div class="party fade-in-element">
+            <lord-icon
+             src="https://cdn.lordicon.com/nsgykrsg.json"
+             trigger="loop"
+             delay="2000"
+             stroke="light"
+             colors="primary:#8B4513,secondary:#C7889D"
+             style="width:200px;height:200px">
+            </lord-icon>
+           <h2>Recepción</h2>
+           <p>Casa Club Residenciales Amayito</p>
+           <div class="details">
+            <div class="time-location">
+                 <span class="date"> 17 Octubre</span>
+                <span class="separator">|</span>
+                <span class="time">18:00 hrs</span>
+            </div>
+        <p>Km 111 Carretera Interamericana, Jutiapa</p>
+        <button type="button" class="direction-button" onclick="elegirAplicacionOtraDireccion()">Cómo llegar</button>
+           </div>
+           </div>
+        </div>
+        <!--div cerezo-->
+        <div class="section-cerezo"></div>
+         <!-- Regalos -->
+         <div class="section-gifts fade-in-element">
+            <lord-icon class="icon-gift"
+             src="https://cdn.lordicon.com/kezeezyg.json"
+             trigger="loop"
+             delay="2000"
+             stroke="light"
+             colors="primary:#8B4513,secondary:#C7889D"
+             style="width:200px;height:200px">
+            </lord-icon>
+            <h2>Lluvia de Sobres</h2>
+            <p>Lo que más queremos es compartir contigo nuestro gran día, pero agradecemos mucho el gesto de un obsequio. Tendremos un cofre en la entrada para que puedas dejar tu sobre con efectivo</p>
+            <p>¡Gracias!</p>
+        </div>
+         <!-- Playlist -->
+         <div class="section-playlist fade-in-element">
+            <h2>Playlist</h2>
+             <lord-icon
+                 src="https://cdn.lordicon.com/vvlnxtgv.json"
+                 trigger="loop"
+                 delay="2000"
+                 stroke="light"
+                 colors="primary:#8B4513,secondary:#C7889D"
+                 style="width:200px;height:200px">
+             </lord-icon>
+            <p>Nos encantaría que nos sugieras esas canciones que sabes que son geniales y no pueden faltar.</p>
+            <button onclick="window.open('https://open.spotify.com/playlist/2KEUU1YVGnVGtPlT0w3Chw?si=cfb68ea8492045e7&pt=ec59916db06086136c7518a0e7c7ff83', '_blank')"> Abrir playlist en Spotify</button>
+        </div>
+         <!--imagen-->
+         <div class="section fade-in-element">
+            <img src="Imagenes/S3.jpg" alt="Foto de la quinceañera" width="100%" loading="lazy">
+        </div>
+         <!--dresscode-->
+         <div class="section fade-in-element">
+            <h2>Dress Code</h2>
+            <lord-icon
+            src="https://cdn.lordicon.com/okgbpdra.json"
+            trigger="loop"
+            delay="2000"
+            stroke="light"
+            colors="primary:#8b4513,secondary:#c7889d"
+            style="width:200px;height:200px">
+        </lord-icon>
+            <p>Formal y elegante, el color rosado y palo rosa quedan reservados exclusivamente para la quinceañera.</p>
+        </div>
+        <!--div cerezo-->
+        <div class="section-cerezo0"></div>
+       <!-- Galería de Fotos -->
+       <div class="section fade-in-element">
+           <h2>Galería</h2>
+           <div class="galeria">
+             <img src="Imagenes/G1.jpg" alt="Foto 1" class="galeria-imagen" onclick="changePhoto(this)" loading="lazy">
+             <img src="Imagenes/G2.jpg" alt="Foto 2" class="galeria-imagen" onclick="changePhoto(this)" loading="lazy">
+             <img src="Imagenes/G3.jpg" alt="Foto 3" class="galeria-imagen" onclick="changePhoto(this)" loading="lazy">
+             <img src="Imagenes/G4.jpg" alt="Foto 4" class="galeria-imagen" onclick="changePhoto(this)" loading="lazy">
+           </div>
+        </div>
+        <!-- Modal para visualización de fotos -->
+        <div id="photo-modal" class="photo-modal" onclick="closeModal(event)">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img id="main-photo-modal" src="" alt="Imagen ampliada">
+        </div>
+         <!-- Album Digital -->
+         <div class="section-filter fade-in-element">
+            <h2>Hagamos los recuerdos inolvidables!</h2>
+            <p>Coleccionemos este momento inolvidable. Comparte con nosotros las fotos que inmortalizaron este dia tan especial. Subelas usando el QR o dando click en el boton.</p>
+            <img src="Imagenes/QR-AL.svg" alt="QR para subir fotos al album digital" loading="lazy">
+            <button onclick="window.open('https://drive.google.com/drive/folders/1kEf6Axomia5GI3IBRIhshpwj7qbLVemc?usp=drive_link', '_blank')">Subir fotos</button>
+         </div>
+        <!-- Imagen -->
+        <div class="section fade-in-element">
+            <img src="Imagenes/FINAL.jpg" alt="Foto de la quinceañera" width="100%" loading="lazy">
+        </div>
+        <!-- frase final-->
+        <div class="section-quote fade-in-element">
+            <h1>Tu presencia es el mejor regalo. Nos sentimos bendecidos de compartir este día tan especial contigo.</h1>
+        </div>
+        <!-- Footer -->
+        <footer>
+            <div class="section-social-icons fade-in-element">
+                <a href="https://www.facebook.com/thetwodesign" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/thetwodesign/" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://wa.me/50236011737" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            </div>
+            <div class="section-logo">
+                <img src="Imagenes/2.png" alt="Logo" width="100" loading="lazy">
+            </div>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
