@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mis Quince Ana Laura Amaya Ariza</title>
+    <title>Mis Quince Ana Laura</title>
     <meta property="og:url" content="">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Mis Quince Ana Laura Amaya Ariza">
-    <meta property="og:description" content="Te invito a mis quince, con amor Ana Laura Amaya Ariza.">
-    <meta property="og:image" content="https://images.pexels.com/photos/12017111/pexels-photo-12017111.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2">
+    <meta property="og:description" content="Nos vemos en mi fiesta.">
+    <meta property="og:image" content="https://images.pexels.com/photos/37461587/pexels-photo-37461587.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="preload" href="Imagenes/F1.jpg" as="image">
@@ -90,7 +90,7 @@
         </div>
         <!-- Confirmación -->
         <div class="section fade-in-element">
-            <h3>Confirmar Asistencia</h3>
+            <h3>Confirmar asistencia</h3>
             <lord-icon
              src="https://cdn.lordicon.com/fjvfsqea.json"
              trigger="loop"
@@ -99,14 +99,25 @@
              colors="primary:#8B4513,secondary:#C7889D"
              style="width:200px;height:200px">
            </lord-icon>
-           <p>Para nosotros es muy importante que confirmes tu asistencia antes del 01 de Marzo, o bien indicarnos si no podrás acompañarnos.</p>
+            <p>Para nosotros es muy importante que confirmes tu asistencia lo antes posible.</p>
             <button onclick="confirmarAsistencia()">Confirmar</button>
             <div id="confirmacion"></div>
         </div>
+        <div id="asistencia-modal" class="asistencia-modal is-hidden" onclick="cerrarModalAsistencia(event)">
+            <div class="asistencia-modal-content">
+                <h3>Confirmación de asistencia</h3>
+                <p>Selecciona una opción para enviar tu respuesta por WhatsApp.</p>
+                <div class="asistencia-modal-actions">
+                    <button type="button" onclick="responderAsistencia('si')">Sí asistiré</button>
+                    <button type="button" onclick="responderAsistencia('no')">No asistiré</button>
+                </div>
+                <button type="button" class="asistencia-modal-close" onclick="cerrarModalAsistencia()">Cerrar</button>
+            </div>
+        </div>
          <!--imagen-->
          <div class="section fade-in-element">
-            <img src="Imagenes/S1.jpg" alt="Foto de la quinceañera" width="100%" loading="lazy">
-        </div>
+            <img src="Imagenes/S3.jpg" alt="Foto de la quinceañera" width="100%" loading="lazy">
+         </div>
         <!-- Itinerario -->
         <div class="section fade-in-element">
           <!--card ceremonia-->
@@ -165,7 +176,7 @@
         </div>
          <!--imagen-->
          <div class="section fade-in-element">
-            <img src="Imagenes/S3.jpg" alt="Foto de la quinceañera" width="100%" loading="lazy">
+            <img src="Imagenes/S1.jpg" alt="Foto de la quinceañera" width="100%" loading="lazy">
         </div>
          <!--dresscode-->
          <div class="section fade-in-element">
@@ -199,15 +210,49 @@
         </div>
          <!-- Album Digital -->
          <div class="section-filter fade-in-element">
-            <h2>Hagamos los recuerdos inolvidables!</h2>
-            <p>Coleccionemos este momento inolvidable. Comparte con nosotros las fotos que inmortalizaron este dia tan especial. Subelas usando el QR o dando click en el boton.</p>
+            <h2>¡Hagamos los recuerdos inolvidables!</h2>
+            <p>Coleccionemos este momento inolvidable. Comparte con nosotros las fotos que inmortalizaron este día tan especial. Súbelas usando el QR o dando clic en el botón.</p>
             <img src="Imagenes/QR-AL.svg" alt="QR para subir fotos al album digital" loading="lazy">
             <button onclick="window.open('https://drive.google.com/drive/folders/1kEf6Axomia5GI3IBRIhshpwj7qbLVemc?usp=drive_link', '_blank')">Subir fotos</button>
          </div>
-        <!-- Imagen -->
-        <div class="section fade-in-element">
-            <img src="Imagenes/FINAL.jpg" alt="Foto de la quinceañera" width="100%" loading="lazy">
-        </div>
+         <!-- Buenos Deseos -->
+         <div class="section section-wishes fade-in-element" id="wishes-section">
+            <h2>Déjanos tu deseo</h2>
+            <lord-icon
+            src="https://cdn.lordicon.com/vgyuhnxn.json"
+            trigger="loop"
+            delay="2000"
+            stroke="light"
+            colors="primary:#8b4513,secondary:#c7889d"
+            style="width:200px;height:200px">
+            </lord-icon>
+            <p>Queremos guardar este momento también en palabras. Déjanos tu mensaje y tus mejores deseos para Ana Laura.</p>
+            <div class="wishes-buttons-wrap">
+                <button type="button" onclick="toggleWishForm()">Dejar deseo</button>
+                <button type="button" onclick="toggleWishes()">Leer deseos</button>
+            </div>
+
+            <div id="wish-form-panel" class="wish-panel hidden">
+                <form id="wish-form" class="wish-form" onsubmit="return submitWish(event)">
+                    <label for="wish-name">Nombre</label>
+                    <input type="text" id="wish-name" name="name" placeholder="Tu nombre" required>
+
+                    <label for="wish-message">Deseo</label>
+                    <textarea id="wish-message" name="message" rows="4" placeholder="Escribe tu mensaje" required></textarea>
+
+                    <button type="submit">Enviar deseo</button>
+                    <p id="wish-status" class="wish-status" aria-live="polite"></p>
+                </form>
+            </div>
+
+            <div id="wishes" class="wishes-list hidden">
+                <p class="wishes-empty">Aún no hay deseos. Sé la primera persona en dejar uno.</p>
+            </div>
+         </div>
+         <!-- Imagen -->
+         <div class="section fade-in-element">
+             <img src="Imagenes/FINAL.jpg" alt="Foto de la quinceañera" width="100%" loading="lazy">
+         </div>
         <!-- frase final-->
         <div class="section-quote fade-in-element">
             <h1>Tu presencia es el mejor regalo. Nos sentimos bendecidos de compartir este día tan especial contigo.</h1>
@@ -224,6 +269,8 @@
             </div>
         </footer>
     </div>
+    <script src="config.js"></script>
+    <script type="module" src="database.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

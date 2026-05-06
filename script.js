@@ -1,4 +1,7 @@
 // Función para abrir la invitación (sobre) y reproducir la música
+let invitadoActual = null;
+let activeEventId = 'ana-laura-2026';
+
 function abrirInvitacion() {
     // Obtener el sobre y la invitación
     const envelope = document.getElementById('envelope');
@@ -42,21 +45,51 @@ function cargarDatosInvitado() {
         return;
     }
 
-    // Base de datos simulada
+    activeEventId = String(
+        (window.config && window.config.event && window.config.event.defaultEventId)
+        || 'ana-laura-2026'
+    ).trim();
+
+    // Base de datos local de respaldo
     const invitados = {
         '1': { nombre: 'Ana Pérez', pases: 3 },
         '2': { nombre: 'Luis García', pases: 2 },
         '3': { nombre: 'María López', pases: 4 }
     };
 
-    const invitado = invitados[invitadoId];
+    const invitadoLocal = invitados[invitadoId];
 
-    if (invitado) {
-        document.getElementById('nombreInvitado').innerText = invitado.nombre;
-        document.getElementById('cantidadPases').innerText = `Pases: ${invitado.pases}`;
-    } else {
-        alert('Invitado no encontrado.');
+    const aplicarInvitado = (invitado) => {
+        if (invitado) {
+            invitadoActual = {
+                id: String(invitado.id || invitadoId),
+                nombre: String(invitado.nombre || ''),
+                pases: Number(invitado.pases) || 0
+            };
+            document.getElementById('nombreInvitado').innerText = invitado.nombre;
+            document.getElementById('cantidadPases').innerText = `Pases: ${invitado.pases}`;
+        } else {
+            alert('Invitado no encontrado.');
+        }
+    };
+
+    if (window.RSVPDatabase && typeof window.RSVPDatabase.getInvitadoById === 'function') {
+        window.RSVPDatabase
+            .getInvitadoById(activeEventId, invitadoId)
+            .then((invitadoRemoto) => {
+                if (invitadoRemoto && invitadoRemoto.activo !== false) {
+                    aplicarInvitado(invitadoRemoto);
+                    return;
+                }
+                aplicarInvitado(invitadoLocal);
+            })
+            .catch(() => {
+                aplicarInvitado(invitadoLocal);
+            });
+        return;
     }
+
+    aplicarInvitado(invitadoLocal);
 }
 
 // Función para iniciar el contador de la fecha del evento
@@ -129,16 +162,82 @@ document.addEventListener("DOMContentLoaded", function() {
 
 //Funcion para confirmar la asistencia 
 function confirmarAsistencia() {
-    const invitado = "Ana Pérez";  // Aquí puedes obtener el nombre dinámicamente si es necesario
-    const pases = 3;  // Aquí puedes obtener la cantidad de pases de forma dinámica
+    const modal = document.getElementById('asistencia-modal');
 
-    const mensaje = `Hola, soy ${invitado} y confirmo mi asistencia con ${pases} pases para la fiesta de quince años de Andria.`;
-    const numeroTelefono = '50236011737'; // Reemplaza con el número de WhatsApp al cual se enviará el mensaje
+    if (!modal) {
+        return;
+    }
 
+    modal.classList.remove('is-hidden');
+}
+
+function cerrarModalAsistencia(event) {
+    const modal = document.getElementById('asistencia-modal');
+
+    if (!modal) {
+        return;
+    }
+
+    if (!event || event.target.id === 'asistencia-modal') {
+        modal.classList.add('is-hidden');
+    }
+}
+
+function responderAsistencia(respuesta) {
+    if (!invitadoActual) {
+        alert('No se encontró la información del invitado.');
+        return;
+    }
+
+    const nombre = invitadoActual.nombre;
+    const pases = Number(invitadoActual.pases) || 0;
+    const mensaje = construirMensajeAsistencia(respuesta, nombre, pases);
+    const numeroTelefono = '50233649029';
     const enlaceWhatsapp = `https://api.whatsapp.com/send?phone=${numeroTelefono}&text=${encodeURIComponent(mensaje)}`;
-    
-    // Abre el enlace de WhatsApp
+    const confirmacion = document.getElementById('confirmacion');
+
+    if (confirmacion) {
+        if (respuesta === 'si') {
+            confirmacion.innerText = 'Gracias por confirmar, nos vemos pronto';
+        } else {
+            confirmacion.innerText = 'Lamentamos que no puedas acompañarnos, te extrañaremos.';
+        }
+    }
+
+    cerrarModalAsistencia();
+
+    if (window.RSVPDatabase && typeof window.RSVPDatabase.saveConfirmation === 'function') {
+        window.RSVPDatabase.saveConfirmation(activeEventId, {
+            id: String(invitadoActual.id || '').trim() || 'default',
+            nombre,
+            pasesAsignados: pases,
+            respuesta,
+            cantidadConfirmada: respuesta === 'si' ? pases : 0,
+            fechaConfirmacion: Date.now()
+        }).catch((error) => {
+            console.error('No se pudo guardar la confirmación en Firebase:', error);
+        });
+    }
+
     window.open(enlaceWhatsapp, '_blank');
+}
+
+function construirMensajeAsistencia(respuesta, nombre, pases) {
+    const esUnPase = pases === 1;
+
+    if (respuesta === 'si') {
+        if (esUnPase) {
+            return `Hola, soy ${nombre} y confirmo mi asistencia con mi lugar reservado a los quince de Ana Laura. Nos vemos pronto.`;
+        }
+
+        return `Hola, somos ${nombre} y confirmamos nuestra asistencia con nuestros ${pases} pases reservados a los quince de Ana Laura. Nos vemos pronto.`;
+    }
+
+    if (esUnPase) {
+        return `Gracias por la invitación, pero desafortunadamente no podré asistir. Saludos, ${nombre}`;
+    }
+
+    return `Gracias por la invitación, pero desafortunadamente no podremos asistir. Saludos, ${nombre}`;
 }
 //Funcion para abrir waze o maps
 //iglesia
@@ -167,3 +266,134 @@ function elegirAplicacionOtraDireccion() {
         window.open(enlaceWaze, '_blank');
     }, 1000); // Retraso para permitir que el primer enlace se abra si está disponible
 }
+
+const wishesData = [];
+
+function syncWishesFromFirebase() {
+    if (!window.RSVPDatabase || typeof window.RSVPDatabase.subscribeToWishes !== 'function') {
+        return;
+    }
+
+    window.RSVPDatabase.subscribeToWishes(
+        activeEventId,
+        (wishes) => {
+            wishesData.length = 0;
+            (Array.isArray(wishes) ? wishes : []).forEach((wish) => {
+                wishesData.push({
+                    name: String(wish.nombre || '').trim(),
+                    message: String(wish.mensaje || '').trim(),
+                    timestamp: Number(wish.timestamp) || 0
+                });
+            });
+            renderWishes();
+        },
+        (error) => {
+            console.error('Error al sincronizar deseos:', error);
+        }
+    );
+}
+
+function toggleWishForm() {
+    const formPanel = document.getElementById('wish-form-panel');
+    const wishesList = document.getElementById('wishes');
+
+    if (!formPanel || !wishesList) {
+        return;
+    }
+
+    formPanel.classList.toggle('hidden');
+    wishesList.classList.add('hidden');
+}
+
+function toggleWishes() {
+    const formPanel = document.getElementById('wish-form-panel');
+    const wishesList = document.getElementById('wishes');
+
+    if (!formPanel || !wishesList) {
+        return;
+    }
+
+    renderWishes();
+    wishesList.classList.toggle('hidden');
+    formPanel.classList.add('hidden');
+}
+
+function submitWish(event) {
+    event.preventDefault();
+
+    const nameInput = document.getElementById('wish-name');
+    const messageInput = document.getElementById('wish-message');
+    const status = document.getElementById('wish-status');
+
+    if (!nameInput || !messageInput || !status) {
+        return false;
+    }
+
+    const name = nameInput.value.trim();
+    const message = messageInput.value.trim();
+
+    if (!name || !message) {
+        status.innerText = 'Por favor completa nombre y deseo.';
+        return false;
+    }
+
+    if (window.RSVPDatabase && typeof window.RSVPDatabase.saveWish === 'function') {
+        window.RSVPDatabase
+            .saveWish(activeEventId, {
+                nombre: name,
+                mensaje: message,
+                timestamp: Date.now()
+            })
+            .then(() => {
+                status.innerText = 'Gracias por tu deseo. Lo guardamos con mucho cariño.';
+            })
+            .catch(() => {
+                wishesData.unshift({ name, message, timestamp: Date.now() });
+                renderWishes();
+                status.innerText = 'Guardamos tu deseo localmente por el momento.';
+            });
+    } else {
+        wishesData.unshift({ name, message, timestamp: Date.now() });
+        renderWishes();
+        status.innerText = 'Gracias por tu deseo. Lo guardamos con mucho cariño.';
+    }
+
+    nameInput.value = '';
+    messageInput.value = '';
+    return false;
+}
+
+function renderWishes() {
+    const container = document.getElementById('wishes');
+
+    if (!container) {
+        return;
+    }
+
+    if (wishesData.length === 0) {
+        container.innerHTML = '<p class="wishes-empty">Aún no hay deseos. Sé la primera persona en dejar uno.</p>';
+        return;
+    }
+
+    container.innerHTML = wishesData
+        .map((wish) => `
+            <article class="wish-card">
+                <h3 class="wish-card-name">${escapeHtml(wish.name)}</h3>
+                <p class="wish-card-message">${escapeHtml(wish.message)}</p>
+            </article>
+        `)
+        .join('');
+}
+
+function escapeHtml(value) {
+    return value
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    setTimeout(syncWishesFromFirebase, 0);
+});
