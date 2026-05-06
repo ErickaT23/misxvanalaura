@@ -257,6 +257,13 @@ body {
 .section-filter, .section-playlist{
     background-color: #f8eef3ca;
 }
+.section-filter{
+        display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
 .section-main {
     position: relative;
     margin: 0;
