@@ -94,22 +94,52 @@ function cargarDatosInvitado() {
 
 // Función para iniciar el contador de la fecha del evento
 function iniciarContador() {
-    const eventoFecha = new Date("October 17, 2026 00:00:00").getTime();
+    const eventoFecha = new Date(2026, 9, 17, 17, 0, 0).getTime();
 
-    setInterval(() => {
+    const actualizarContador = () => {
         const ahora = new Date().getTime();
         const diferencia = eventoFecha - ahora;
+
+        if (diferencia <= 0) {
+            actualizarValorContador("dias", 0);
+            actualizarValorContador("horas", 0);
+            actualizarValorContador("minutos", 0);
+            actualizarValorContador("segundos", 0);
+            return;
+        }
 
         const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
         const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
         const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
 
-        document.getElementById("dias").innerText = dias;
-        document.getElementById("horas").innerText = horas;
-        document.getElementById("minutos").innerText = minutos;
-        document.getElementById("segundos").innerText = segundos;
-    }, 1000);
+        actualizarValorContador("dias", dias);
+        actualizarValorContador("horas", horas);
+        actualizarValorContador("minutos", minutos);
+        actualizarValorContador("segundos", segundos);
+    };
+
+    actualizarContador();
+    setInterval(actualizarContador, 1000);
+}
+
+function actualizarValorContador(id, valor) {
+    const elemento = document.getElementById(id);
+
+    if (!elemento) {
+        return;
+    }
+
+    const valorTexto = String(valor);
+
+    if (elemento.innerText === valorTexto) {
+        return;
+    }
+
+    elemento.innerText = valorTexto;
+    elemento.classList.remove('countdown-tick');
+    void elemento.offsetWidth;
+    elemento.classList.add('countdown-tick');
 }
 
 // Función para abrir el lightbox solo al hacer clic en una imagen de la galería
@@ -126,15 +156,31 @@ function changePhoto(element) {
 // Función para mostrar el modal
 function openModal() {
     const modal = document.getElementById('photo-modal');
-    modal.style.display = 'flex'; // Usar 'flex' para centrar la imagen en pantalla
+
+    if (!modal) {
+        return;
+    }
+
+    modal.style.display = 'flex';
+    requestAnimationFrame(() => {
+        modal.classList.add('is-open');
+    });
 }
 
 // Función para cerrar el modal
 function closeModal(event) {
     // Cerrar el modal solo si el clic no fue en la imagen
-    if (event.target.id === 'photo-modal' || event.target.className === 'close') {
-        const modal = document.getElementById('photo-modal');
-        modal.style.display = 'none';
+    const modal = document.getElementById('photo-modal');
+
+    if (!modal) {
+        return;
+    }
+
+    if (!event || event.target.id === 'photo-modal' || event.target.className === 'close') {
+        modal.classList.remove('is-open');
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
     }
 }
 
