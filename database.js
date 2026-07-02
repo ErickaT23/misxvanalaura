@@ -1493,10 +1493,12 @@ function renderWishes(data) {
 
     const name = document.createElement("h4");
     name.className = "wish-card-name";
+    name.style.padding = "0";
     name.textContent = wish.nombre;
 
     const message = document.createElement("p");
     message.className = "wish-card-message";
+    message.style.padding = "0";
     message.textContent = wish.mensaje;
 
     const date = document.createElement("p");

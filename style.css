@@ -301,14 +301,16 @@ body {
     animation: titleReveal 0.95s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 .section-main-title h1 {
-    font-size: 40px;
+    font-size: 28px;
     padding: 5px;
     animation-delay: 0.18s;
+    margin-top: -22px;
 }
 .section-main-title h2 {
-    font-size: 50px;
+    font-size: 30px;
     padding: 5px;
     animation-delay: 0.34s;
+    margin-top: -20px;
 }
 .section-quote h1 {
     font-family: var(--font-1);
@@ -320,7 +322,7 @@ body {
     margin: 0;
 }
 .section-main h2 {
-    font-size: 50px;
+    font-size: 45px;
     padding: 5px;
 }
 .section-music{
@@ -372,6 +374,9 @@ body {
     font-style: italic;
     font-size: 24px;
     padding: 7px;
+}
+.section-countdown .countdown-message {
+    font-size: 20px;
 }
 .section-countdown .countdown-intro {
     font-size: 15px;
@@ -559,7 +564,7 @@ body {
     font-family: var(--font-1);
     font-style: italic;
     font-weight: 400;
-    font-size: 22px;
+    font-size: 20px;
     padding: 20px;
     color: var(--color-1);
 }
@@ -585,11 +590,15 @@ body {
     color: var(--color-1);
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
+#nombreInvitado,
+#cantidadPases {
+    padding: 0;
+}
 .section p, .section-gifts p, .section-filter p{
     font-family: var(--font-1);
     font-style: italic;
     font-weight: 400;
-    font-size: 22px;
+    font-size: 20px;
     padding: 20px;
     margin: 0;
     color: var(--color-1);
@@ -685,6 +694,7 @@ body {
     font-family: var(--font-1);
     font-style: italic;
     font-size: 0.95em;
+    padding: 0;
     margin: 0 0 4px;
     color: var(--color-1);
 }
@@ -692,6 +702,7 @@ body {
     font-family: var(--font-1);
     font-style: italic;
     font-size: 0.9em;
+    padding: 0;
     margin: 0;
     color: #8f4a64;
 }
@@ -930,6 +941,10 @@ footer {
         font-size: 1.5em;
     }
 
+    .section-countdown .countdown-message {
+        font-size: 20px;
+    }
+
     .section-countdown .countdown-intro {
         font-size: 0.95rem;
     }
@@ -974,6 +989,9 @@ footer {
     .section-countdown p,
     .section-calendar a, .section-b p{
         font-size: 1.8em;
+    }
+    .section-countdown .countdown-message {
+        font-size: 20px;
     }
     .section-countdown .countdown-intro {
         font-size: 1rem;

@@ -424,8 +424,8 @@ function renderWishes() {
     container.innerHTML = wishesData
         .map((wish) => `
             <article class="wish-card">
-                <h3 class="wish-card-name">${escapeHtml(wish.name)}</h3>
-                <p class="wish-card-message">${escapeHtml(wish.message)}</p>
+                <h3 class="wish-card-name" style="padding: 0;">${escapeHtml(wish.name)}</h3>
+                <p class="wish-card-message" style="padding: 0;">${escapeHtml(wish.message)}</p>
             </article>
         `)
         .join('');
