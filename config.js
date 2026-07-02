@@ -10,13 +10,13 @@ const config = {
     },
 
     seo: {
-        titulo: "Mis Quince Ana Laura",
-        descripcion: "Invitación de quince años de Ana Laura - 17 de octubre de 2026",
+        titulo: "Mis Quince Anna Laura",
+        descripcion: "Invitación de quince años de Anna Laura - 17 de octubre de 2026",
         autor: "Two Design"
     },
 
     pareja: {
-        nombres: "Ana Laura",
+        nombres: "Anna Laura",
         fecha: "17-10-2026",
         fechaVisible: "17.10.2026"
     },
@@ -42,7 +42,7 @@ const config = {
     },
 
     footer: {
-        hashtag: "#AnaLauraXV",
+        hashtag: "#AnnaLauraXV",
         instagramUrl: "https://www.instagram.com/thetwodesign/",
         facebookUrl: "https://www.facebook.com/thetwodesign",
         marcaTexto: "Diseño",

@@ -52,7 +52,7 @@ function cargarDatosInvitado() {
 
     // Base de datos local de respaldo
     const invitados = {
-        '1': { nombre: 'Ana Pérez', pases: 3 },
+        '1': { nombre: 'Anna Pérez', pases: 3 },
         '2': { nombre: 'Luis García', pases: 2 },
         '3': { nombre: 'María López', pases: 4 }
     };
@@ -273,10 +273,10 @@ function construirMensajeAsistencia(respuesta, nombre, pases) {
 
     if (respuesta === 'si') {
         if (esUnPase) {
-            return `Hola, soy ${nombre} y confirmo mi asistencia con mi lugar reservado a los quince de Ana Laura. Nos vemos pronto.`;
+            return `Hola, soy ${nombre} y confirmo mi asistencia con mi lugar reservado a los quince de Anna Laura. Nos vemos pronto.`;
         }
 
-        return `Hola, somos ${nombre} y confirmamos nuestra asistencia con nuestros ${pases} pases reservados a los quince de Ana Laura. Nos vemos pronto.`;
+        return `Hola, somos ${nombre} y confirmamos nuestra asistencia con nuestros ${pases} pases reservados a los quince de Anna Laura. Nos vemos pronto.`;
     }
 
     if (esUnPase) {

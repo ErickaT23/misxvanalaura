@@ -1,7 +1,7 @@
 import { subscribeToConfirmations, subscribeToInvitados } from "./database.js";
 
 const guestDirectorySeed = {
-    "1": { nombre: "Ana Pérez", pases: 3 },
+    "1": { nombre: "Anna Pérez", pases: 3 },
     "2": { nombre: "Luis García", pases: 2 },
     "3": { nombre: "María López", pases: 4 }
 };
