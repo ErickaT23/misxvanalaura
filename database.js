@@ -165,6 +165,7 @@ function mapInvitadosSnapshotToArray(snapshot) {
       return {
         ...value,
         id,
+        nombre: formatGuestName(value.nombre),
         _key: key
       };
     })
@@ -375,7 +376,7 @@ function normalizeLocalGuestsSource(source) {
 
         return {
           id,
-          nombre: String(guest.nombre || "").trim() || "Invitado",
+          nombre: formatGuestName(guest.nombre) || "Invitado",
           pases: Math.max(1, Number(guest.pases) || 1),
           activo: typeof guest.activo === "undefined" ? true : Boolean(guest.activo)
         };
@@ -392,7 +393,7 @@ function normalizeLocalGuestsSource(source) {
 
         return {
           id,
-          nombre: String(guest.nombre || "").trim() || "Invitado",
+          nombre: formatGuestName(guest.nombre) || "Invitado",
           pases: Math.max(1, Number(guest.pases) || 1),
           activo: typeof guest.activo === "undefined" ? true : Boolean(guest.activo)
         };
@@ -425,6 +426,22 @@ function resolveLocalGuestsSource(eventId, explicitSource) {
 
 function sanitizeText(value) {
   return String(value == null ? "" : value).trim();
+}
+
+function formatGuestName(value) {
+  const sanitized = sanitizeText(value).replace(/\s+/g, " ");
+  if (!sanitized) return "";
+  const lowercaseWords = new Set(["y", "de", "del", "la", "las", "los"]);
+
+  return sanitized
+    .split(" ")
+    .map(function (word) {
+      const lower = String(word || "").toLocaleLowerCase("es");
+      if (!lower) return "";
+      if (lowercaseWords.has(lower)) return lower;
+      return lower.charAt(0).toLocaleUpperCase("es") + lower.slice(1);
+    })
+    .join(" ");
 }
 
 function sanitizeTextForFingerprint(value) {
@@ -829,7 +846,8 @@ async function getInvitadoById(arg1, arg2) {
 
     return {
       ...data,
-      id: String(data.id || guestId || safeGuestId)
+      id: String(data.id || guestId || safeGuestId),
+      nombre: formatGuestName(data.nombre)
     };
   } catch (error) {
     console.warn("No se pudo leer invitado por id del evento:", error);
@@ -843,7 +861,7 @@ async function createInvitado(arg1, arg2) {
   const payload = parsed.payload || {};
 
   const id = String(payload.id || ("guest_" + Date.now())).trim() || ("guest_" + Date.now());
-  const nombre = sanitizeText(payload.nombre);
+  const nombre = formatGuestName(payload.nombre);
   const pases = Math.max(1, Number(payload.pases) || 1);
   const activo = typeof payload.activo === "undefined" ? true : Boolean(payload.activo);
 
@@ -872,7 +890,7 @@ async function updateInvitado(arg1, arg2, arg3) {
     throw new Error("INVITADO_ID_REQUERIDO");
   }
 
-  const nombre = sanitizeText(payload.nombre);
+  const nombre = formatGuestName(payload.nombre);
   const pases = Math.max(1, Number(payload.pases) || 1);
   const activo = typeof payload.activo === "undefined" ? true : Boolean(payload.activo);
 
@@ -911,7 +929,7 @@ async function deleteInvitado(arg1, arg2) {
   const current = snapshot.val() || {};
   const updatedRecord = {
     id: String(current.id || guestId),
-    nombre: sanitizeText(current.nombre) || "Invitado",
+    nombre: formatGuestName(current.nombre) || "Invitado",
     pases: Math.max(1, Number(current.pases) || 1),
     activo: false
   };
@@ -979,7 +997,7 @@ async function migrateLocalGuestsToFirebase(arg1, arg2, arg3) {
         const guestId = sanitizeFirebaseKey(guest.id);
         return set(ref(db, getEventInvitadosPath(eventId) + "/" + guestId), {
           id: String(guest.id),
-          nombre: String(guest.nombre || "").trim(),
+          nombre: formatGuestName(guest.nombre),
           pases: Math.max(1, Number(guest.pases) || 1),
           activo: typeof guest.activo === "undefined" ? true : Boolean(guest.activo)
         });

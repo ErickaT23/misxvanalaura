@@ -2,6 +2,22 @@
 let invitadoActual = null;
 let activeEventId = 'ana-laura-2026';
 
+function formatearNombreInvitado(nombre) {
+    const texto = String(nombre == null ? '' : nombre).trim().replace(/\s+/g, ' ');
+    if (!texto) return '';
+    const palabrasMinusculas = new Set(['y', 'de', 'del', 'la', 'las', 'los']);
+
+    return texto
+        .split(' ')
+        .map((palabra) => {
+            const minuscula = String(palabra || '').toLocaleLowerCase('es');
+            if (!minuscula) return '';
+            if (palabrasMinusculas.has(minuscula)) return minuscula;
+            return minuscula.charAt(0).toLocaleUpperCase('es') + minuscula.slice(1);
+        })
+        .join(' ');
+}
+
 function abrirInvitacion() {
     // Obtener el sobre y la invitación
     const envelope = document.getElementById('envelope');
@@ -52,21 +68,136 @@ function cargarDatosInvitado() {
 
     // Base de datos local de respaldo
     const invitados = {
-        '1': { nombre: 'Anna Pérez', pases: 3 },
-        '2': { nombre: 'Luis García', pases: 2 },
-        '3': { nombre: 'María López', pases: 4 }
+        '1': { nombre: 'SRA. LILIAN HERNÁNDEZ DE PADILLA', pases: 2 },
+        '2': { nombre: 'FAMILIA ORELLANA HERNÁNDEZ', pases: 4 },
+        '3': { nombre: 'FAMILIA YON HERNÁNDEZ', pases: 4 },
+        '4': { nombre: 'SR. SELVIN ESTUARDO Y SRA.', pases: 2 },
+        '5': { nombre: 'SR. JUAN JOSÉ PADILLA Y FAM', pases: 5 },
+        '6': { nombre: 'FABIOLA PADILLA E HIJO', pases: 2 },
+        '7': { nombre: 'FAM. HENÁNDEZ BATÉN', pases: 3 },
+        '8': { nombre: 'FAM. ORELLANA GONZALEZ', pases: 3 },
+        '9': { nombre: 'NICOLAS ORELLANA HERNÁNDEZ', pases: 1 },
+        '10': { nombre: 'FAM. PADILLA GALLARDO', pases: 4 },
+        '11': { nombre: 'FAM. ANDRADE YON', pases: 2 },
+        '12': { nombre: 'ALEJANDRA HERNÁNDEZ E HIJA', pases: 2 },
+        '13': { nombre: 'SRA. MARIBEL BERRIOS E HIJA', pases: 2 },
+        '14': { nombre: 'SRA. CLAUDIA PADILLA E HIJA', pases: 2 },
+        '15': { nombre: 'FAMILIA CARDONA AMAYA', pases: 3 },
+        '16': { nombre: 'FAM. ARIZA RAMIREZ', pases: 2 },
+        '17': { nombre: 'FAM. LOPEZ ARIZA', pases: 3 },
+        '18': { nombre: 'FAM. DUARTE  PAZ', pases: 2 },
+        '19': { nombre: 'SRA. TELMA ARIZA Y NIETA', pases: 2 },
+        '20': { nombre: 'SR. EVER ARIZA Y FAM', pases: 4 },
+        '21': { nombre: 'SRA. ILMA ARIZA', pases: 2 },
+        '22': { nombre: 'SR. MIGDAEL ARIZA', pases: 1 },
+        '23': { nombre: 'SRA. INGRID ZARCEÑO Y FAM', pases: 4 },
+        '24': { nombre: 'JOSELYN ZARCEÑO', pases: 2 },
+        '25': { nombre: 'FAM. HERNÁNDEZ CARDENAS', pases: 3 },
+        '26': { nombre: 'SRA. NINFA TENAS', pases: 1 },
+        '27': { nombre: 'FAM. ARIZA MARTINEZ', pases: 4 },
+        '28': { nombre: 'KARLA ARIZA', pases: 1 },
+        '29': { nombre: 'Sr. WILBER ORTEGA Y SRA', pases: 2 },
+        '30': { nombre: 'SRA. VILMA GARCIA', pases: 1 },
+        '31': { nombre: 'DEYANIRA MARTINEZ', pases: 1 },
+        '32': { nombre: 'SRA. MARINA HERRERA', pases: 3 },
+        '33': { nombre: 'MARINA VIRULA E HIJO', pases: 2 },
+        '34': { nombre: 'FAM. LÓPEZ VIRULA', pases: 3 },
+        '35': { nombre: 'FAM. VEGA VALIENTE', pases: 3 },
+        '36': { nombre: 'SR. EDWIN HERNÁNDEZ Y FAM', pases: 3 },
+        '37': { nombre: 'PRISCILA HERNÁNDEZ', pases: 2 },
+        '38': { nombre: 'FABIOLA HERNÁNDEZ E HIJO', pases: 2 },
+        '39': { nombre: 'CRISTHIAN CASTILLO Y SRA', pases: 2 },
+        '40': { nombre: 'FAM CRUZ HERRERA', pases: 2 },
+        '41': { nombre: 'FAM HERRERA CRUZ', pases: 3 },
+        '42': { nombre: 'FAM MONZON PEREZ', pases: 4 },
+        '43': { nombre: 'SAHILY LOHAIZA', pases: 1 },
+        '44': { nombre: 'FAM ESPINOZA ROMERO', pases: 3 },
+        '45': { nombre: 'FAM ELVIRA ELÍAS', pases: 2 },
+        '46': { nombre: 'FAM FOLGAR ROMERO', pases: 4 },
+        '47': { nombre: 'JEYMI TRIGUEROS', pases: 1 },
+        '48': { nombre: 'ILIANA AROCHE', pases: 1 },
+        '49': { nombre: 'SRA. MILVIA CASTILLO E HIJO', pases: 2 },
+        '50': { nombre: 'ANDREA MARTINEZ', pases: 1 },
+        '51': { nombre: 'SR WALFRED ORDOÑEZ Y FAM', pases: 3 },
+        '52': { nombre: 'SR ADALBERTO ORDOÑEZ Y FAM', pases: 4 },
+        '53': { nombre: 'NURY SARCEÑO', pases: 1 },
+        '54': { nombre: 'LIC HUGO MENCOS Y SRA', pases: 2 },
+        '55': { nombre: 'SR MARTÍN OROZCO Y SRA', pases: 2 },
+        '56': { nombre: 'MARCELA ARGUETA', pases: 1 },
+        '57': { nombre: 'SOFIA SARCEÑO', pases: 1 },
+        '58': { nombre: 'RODRIGO RUANO', pases: 1 },
+        '59': { nombre: 'MARIA ELISA CORADO', pases: 1 },
+        '60': { nombre: 'CRISTIAN CAMBARA', pases: 1 },
+        '61': { nombre: 'VALERIE CRÚZ', pases: 1 },
+        '62': { nombre: 'FABRIZZIO RUANO', pases: 1 },
+        '63': { nombre: 'ABRIL QUIÑONEZ LEMUS', pases: 1 },
+        '64': { nombre: 'DORIS MENCOS', pases: 1 },
+        '65': { nombre: 'RICARDO CONTRERAS', pases: 1 },
+        '66': { nombre: 'NOEL FOLGAR', pases: 1 },
+        '67': { nombre: 'AMILCAR FOLGAR', pases: 1 },
+        '68': { nombre: 'CHRISTIAN COLOCHO', pases: 1 },
+        '69': { nombre: 'SOFIA GRIJALVA', pases: 1 },
+        '70': { nombre: 'SEBASTIAN SOLARES', pases: 1 },
+        '71': { nombre: 'ANDRÉ MARROQUÍN', pases: 1 },
+        '72': { nombre: 'ANDRES CARVAJAL', pases: 1 },
+        '73': { nombre: 'BORIS NAJERA', pases: 1 },
+        '74': { nombre: 'PATRICK PARRAS', pases: 1 },
+        '75': { nombre: 'ARMANDO LINARES', pases: 1 },
+        '76': { nombre: 'AURY ROSALES', pases: 1 },
+        '77': { nombre: 'IVAN TEO', pases: 1 },
+        '78': { nombre: 'Emanuel PALMA', pases: 1 },
+        '79': { nombre: 'CARLOS VASQUEZ', pases: 1 },
+        '80': { nombre: 'FREDDY LIMA', pases: 1 },
+        '81': { nombre: 'SCARLET PINEDA', pases: 1 },
+        '82': { nombre: 'ANTONY RAMIREZ', pases: 1 },
+        '83': { nombre: 'SR RENE RECINOS Y FAMILIA', pases: 2 },
+        '84': { nombre: 'FAM VALDEZ POLANCO', pases: 2 },
+        '85': { nombre: 'KRISTEL RECINOS', pases: 1 },
+        '86': { nombre: 'MARIA FERNANDA MORALES', pases: 1 },
+        '87': { nombre: 'JOSUE MORALES', pases: 1 },
+        '88': { nombre: 'JOSE ALFREDO HERNANDEZ', pases: 1 },
+        '89': { nombre: 'SERGIO RODIGUEZ', pases: 1 },
+        '90': { nombre: 'Jeremy Barrientos', pases: 1 },
+        '91': { nombre: 'Ivana Ruiz', pases: 1 },
+        '92': { nombre: 'Karla Calderon', pases: 1 },
+        '93': { nombre: 'NICOLE GARCIA', pases: 1 },
+        '94': { nombre: 'STEVEN DANIEL', pases: 1 },
+        '95': { nombre: 'Samuel Salguero', pases: 1 },
+        '96': { nombre: 'ENRRIQUE HERRERA Y FAM.', pases: 4 },
+        '97': { nombre: 'SR TEODORO VASQUEZ Y SRA', pases: 2 },
+        '98': { nombre: 'CLARY HERRERA Y MAMA', pases: 2 },
+        '99': { nombre: 'ANTONIA HERRERA Y FAM', pases: 2 },
+        '100': { nombre: 'SR JOSE LUIS HERRERA Y SRA', pases: 2 },
+        '101': { nombre: 'MARITZA HERRERA Y FAM', pases: 2 },
+        '102': { nombre: 'SRA MARTA DIAZ', pases: 1 },
+        '103': { nombre: 'DAVIS YANES', pases: 1 },
+        '104': { nombre: 'SRA ESTELA HERRERA', pases: 3 },
+        '105': { nombre: 'SR OSBALDO JIMENES Y SRA', pases: 2 },
+        '106': { nombre: 'LIC OSIEL DIONICIO Y SRA.', pases: 2 },
+        '107': { nombre: 'FAM DUARTE DE PAZ', pases: 2 },
+        '108': { nombre: 'GLENDA ZEPEDA FLORES', pases: 1 },
+        '109': { nombre: 'MIRLIN TRIGUEROS', pases: 1 },
+        '110': { nombre: 'MIGDAEL LOPEZ Y FAM', pases: 5 },
+        '111': { nombre: 'ILMARIS LEMUS', pases: 1 },
+        '112': { nombre: 'KARLA MATEO', pases: 1 },
+        '113': { nombre: 'EMELY HERNÁNDEZ', pases: 1 },
+        '114': { nombre: 'DAYANARA PINTO', pases: 1 },
+        '115': { nombre: 'FAM. CARDONA MÉNDEZ', pases: 4 },
+        '116': { nombre: 'RAMON PAZ Y CONCEPCIÓN HERNÁNDEZ', pases: 2 },
+        '117': { nombre: 'SORALLA PAREDES', pases: 2 }
     };
 
     const invitadoLocal = invitados[invitadoId];
 
     const aplicarInvitado = (invitado) => {
         if (invitado) {
+            const nombreFormateado = formatearNombreInvitado(invitado.nombre);
             invitadoActual = {
                 id: String(invitado.id || invitadoId),
-                nombre: String(invitado.nombre || ''),
+                nombre: nombreFormateado,
                 pases: Number(invitado.pases) || 0
             };
-            document.getElementById('nombreInvitado').innerText = invitado.nombre;
+            document.getElementById('nombreInvitado').innerText = nombreFormateado;
             document.getElementById('cantidadPases').innerText = `Pases: ${invitado.pases}`;
         } else {
             alert('Invitado no encontrado.');
