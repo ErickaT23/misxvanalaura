@@ -197,7 +197,7 @@ function cargarDatosInvitado() {
         const permiteConfirmar = invitado && invitado.permiteConfirmar !== false;
 
         if (cantidadPases) {
-            cantidadPases.innerText = pases > 0 ? `Pases: ${pases}` : 'Invitacion informativa';
+            cantidadPases.innerText = pases > 0 ? `Pases: ${pases}` : '';
         }
 
         if (confirmacionSection) {
