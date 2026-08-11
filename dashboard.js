@@ -117,7 +117,8 @@ const guestDirectorySeed = {
     "114": { nombre: "DAYANARA PINTO", pases: 1 },
     "115": { nombre: "FAM. CARDONA MÉNDEZ", pases: 4 },
     "116": { nombre: "RAMON PAZ Y CONCEPCIÓN HERNÁNDEZ", pases: 2 },
-    "117": { nombre: "SORALLA PAREDES", pases: 2 }
+    "117": { nombre: "SORALLA PAREDES", pases: 2 },
+    "147": { nombre: "Wout Van Putten", pases: 0, permiteConfirmar: false }
 };
 
 const guestDirectoriesByEvent = {

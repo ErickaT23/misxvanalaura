@@ -377,8 +377,9 @@ function normalizeLocalGuestsSource(source) {
         return {
           id,
           nombre: formatGuestName(guest.nombre) || "Invitado",
-          pases: Math.max(1, Number(guest.pases) || 1),
-          activo: typeof guest.activo === "undefined" ? true : Boolean(guest.activo)
+          pases: Math.max(0, Number(guest.pases) || 0),
+          activo: typeof guest.activo === "undefined" ? true : Boolean(guest.activo),
+          permiteConfirmar: guest.permiteConfirmar !== false
         };
       })
       .filter(Boolean);
@@ -394,8 +395,9 @@ function normalizeLocalGuestsSource(source) {
         return {
           id,
           nombre: formatGuestName(guest.nombre) || "Invitado",
-          pases: Math.max(1, Number(guest.pases) || 1),
-          activo: typeof guest.activo === "undefined" ? true : Boolean(guest.activo)
+          pases: Math.max(0, Number(guest.pases) || 0),
+          activo: typeof guest.activo === "undefined" ? true : Boolean(guest.activo),
+          permiteConfirmar: guest.permiteConfirmar !== false
         };
       })
       .filter(Boolean);
@@ -862,8 +864,9 @@ async function createInvitado(arg1, arg2) {
 
   const id = String(payload.id || ("guest_" + Date.now())).trim() || ("guest_" + Date.now());
   const nombre = formatGuestName(payload.nombre);
-  const pases = Math.max(1, Number(payload.pases) || 1);
+  const pases = Math.max(0, Number(payload.pases) || 0);
   const activo = typeof payload.activo === "undefined" ? true : Boolean(payload.activo);
+  const permiteConfirmar = payload.permiteConfirmar !== false;
 
   if (!nombre) {
     throw new Error("INVITADO_NOMBRE_REQUERIDO");
@@ -874,7 +877,8 @@ async function createInvitado(arg1, arg2) {
     id,
     nombre,
     pases,
-    activo
+    activo,
+    permiteConfirmar
   };
 
   await set(ref(db, getEventInvitadosPath(eventId) + "/" + safeGuestId), invitadoRecord);
@@ -891,8 +895,9 @@ async function updateInvitado(arg1, arg2, arg3) {
   }
 
   const nombre = formatGuestName(payload.nombre);
-  const pases = Math.max(1, Number(payload.pases) || 1);
+  const pases = Math.max(0, Number(payload.pases) || 0);
   const activo = typeof payload.activo === "undefined" ? true : Boolean(payload.activo);
+  const permiteConfirmar = payload.permiteConfirmar !== false;
 
   if (!nombre) {
     throw new Error("INVITADO_NOMBRE_REQUERIDO");
@@ -903,7 +908,8 @@ async function updateInvitado(arg1, arg2, arg3) {
     id: guestId,
     nombre,
     pases,
-    activo
+    activo,
+    permiteConfirmar
   };
 
   await set(ref(db, getEventInvitadosPath(eventId) + "/" + safeGuestId), invitadoRecord);
@@ -930,8 +936,9 @@ async function deleteInvitado(arg1, arg2) {
   const updatedRecord = {
     id: String(current.id || guestId),
     nombre: formatGuestName(current.nombre) || "Invitado",
-    pases: Math.max(1, Number(current.pases) || 1),
-    activo: false
+    pases: Math.max(0, Number(current.pases) || 0),
+    activo: false,
+    permiteConfirmar: current.permiteConfirmar !== false
   };
 
   await set(targetRef, updatedRecord);
@@ -998,8 +1005,9 @@ async function migrateLocalGuestsToFirebase(arg1, arg2, arg3) {
         return set(ref(db, getEventInvitadosPath(eventId) + "/" + guestId), {
           id: String(guest.id),
           nombre: formatGuestName(guest.nombre),
-          pases: Math.max(1, Number(guest.pases) || 1),
-          activo: typeof guest.activo === "undefined" ? true : Boolean(guest.activo)
+          pases: Math.max(0, Number(guest.pases) || 0),
+          activo: typeof guest.activo === "undefined" ? true : Boolean(guest.activo),
+          permiteConfirmar: guest.permiteConfirmar !== false
         });
       })
     );

@@ -184,10 +184,26 @@ function cargarDatosInvitado() {
         '114': { nombre: 'DAYANARA PINTO', pases: 1 },
         '115': { nombre: 'FAM. CARDONA MÉNDEZ', pases: 4 },
         '116': { nombre: 'RAMON PAZ Y CONCEPCIÓN HERNÁNDEZ', pases: 2 },
-        '117': { nombre: 'SORALLA PAREDES', pases: 2 }
+        '117': { nombre: 'SORALLA PAREDES', pases: 2 },
+        '147': { nombre: 'Wout Van Putten', pases: 0, permiteConfirmar: false }
     };
 
     const invitadoLocal = invitados[invitadoId];
+
+    const actualizarSeccionConfirmacion = (invitado) => {
+        const confirmacionSection = document.getElementById('confirmacion-section');
+        const cantidadPases = document.getElementById('cantidadPases');
+        const pases = Math.max(0, Number(invitado && invitado.pases) || 0);
+        const permiteConfirmar = invitado && invitado.permiteConfirmar !== false;
+
+        if (cantidadPases) {
+            cantidadPases.innerText = pases > 0 ? `Pases: ${pases}` : 'Invitacion informativa';
+        }
+
+        if (confirmacionSection) {
+            confirmacionSection.style.display = permiteConfirmar ? '' : 'none';
+        }
+    };
 
     const aplicarInvitado = (invitado) => {
         if (invitado) {
@@ -195,10 +211,11 @@ function cargarDatosInvitado() {
             invitadoActual = {
                 id: String(invitado.id || invitadoId),
                 nombre: nombreFormateado,
-                pases: Number(invitado.pases) || 0
+                pases: Number(invitado.pases) || 0,
+                permiteConfirmar: invitado.permiteConfirmar !== false
             };
             document.getElementById('nombreInvitado').innerText = nombreFormateado;
-            document.getElementById('cantidadPases').innerText = `Pases: ${invitado.pases}`;
+            actualizarSeccionConfirmacion(invitadoActual);
         } else {
             alert('Invitado no encontrado.');
         }
@@ -339,6 +356,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
 //Funcion para confirmar la asistencia 
 function confirmarAsistencia() {
+    if (!invitadoActual || invitadoActual.permiteConfirmar === false) {
+        return;
+    }
+
     const modal = document.getElementById('asistencia-modal');
 
     if (!modal) {
@@ -363,6 +384,10 @@ function cerrarModalAsistencia(event) {
 function responderAsistencia(respuesta) {
     if (!invitadoActual) {
         alert('No se encontró la información del invitado.');
+        return;
+    }
+
+    if (invitadoActual.permiteConfirmar === false) {
         return;
     }
 
